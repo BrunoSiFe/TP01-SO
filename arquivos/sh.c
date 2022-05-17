@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-/* MARK NAME Seu Nome Aqui */
+/* MARK NAME Bruno Ferreira Da Silva */
 /* MARK NAME Nome de Outro Integrante Aqui */
 /* MARK NAME E Etc */
 
@@ -52,6 +52,21 @@ struct pipecmd {
 int fork1(void);  // Fork mas fechar se ocorrer erro.
 struct cmd *parsecmd(char*); // Processar o linha de comando.
 
+void execSimpleCommand(char** argv)
+{
+    pid_t pid = fork1(); 
+  
+    if (pid == 0) {
+      if (execvp(argv[0], argv) < 0) {
+          printf("\nNão foi possível executar o comando.");
+      }
+      exit(0);
+    } else {
+      wait(NULL); 
+      return;
+    }
+}
+
 /* Executar comando cmd.  Nunca retorna. */
 void
 runcmd(struct cmd *cmd)
@@ -76,7 +91,7 @@ runcmd(struct cmd *cmd)
     /* MARK START task2
      * TAREFA2: Implemente codigo abaixo para executar
      * comandos simples. */
-    fprintf(stderr, "exec nao implementado\n");
+    execSimpleCommand(ecmd->argv);
     /* MARK END task2 */
     break;
 
@@ -126,11 +141,17 @@ main(void)
     /* MARK START task1 */
     /* TAREFA1: O que faz o if abaixo e por que ele é necessário?
      * Insira sua resposta no código e modifique o fprintf abaixo
-     * para reportar o erro corretamente. */
+     * para reportar o erro corretamente. 
+     * 
+     * Resposta : O IF avalia se o prosseso foi capaz de encontrar
+     * o folder informado como argumento para o comando CD, ele é necessário
+     * para tratar caso não seja achado o folder informado, e não terminar a execução
+     * do SO, e sim tratar o erro e retorna-lo para o usuário de uma maneira mais 
+     * user friendly.*/
     if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
       buf[strlen(buf)-1] = 0;
       if(chdir(buf+3) < 0)
-        fprintf(stderr, "reporte erro\n");
+        fprintf(stderr, "Erro ao tentar encontrar o folder informado nos argumentos para o comando CD.\n");
       continue;
     }
     /* MARK END task1 */
