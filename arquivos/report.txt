@@ -13,15 +13,19 @@ Preencha as linhas abaixo com o nome e o e-mail dos integrantes do
 grupo.  Substitua XX pela contribuição de cada membro do grupo no
 desenvolvimento do trabalho.
 
-Nome <email@domain.br> XX%
+Nome <brunoside@gmail.com.br> 50%
 Nome <email@domain.br> XX%
 Nome <email@domain.br> XX%
 
 3. Referências bibliográficas
 
-Adicione aqui as referências bibliográficas.
+https://linux.die.net/man/2/pipe
+https://linux.die.net/man/2/close
+https://linux.die.net/man/2/fork
+https://linux.die.net/man/3/exec
 
 4. Estruturas de dados
 
-Descreva e justifique as estruturas de dados e algoritmos utilizados
-em sua solução.
+Task 2: Para a task 2, execução de um comando simples, foi criado um novo fork, utilizando a função fork1() fornecida, uma vez que ela já avalia caso haja erro, pid = -1,
+caso o fork seja criado com sucesso, chamamos a função execpv, passando o comando, argv[0], e os argumentos necessários para a execução do comando, como por exemplo rm <argumento>,
+em caso de sucesso retornamos o código de sucesso 0 (exit(0)). Caso haja erro na execução esperamos o fim do processo para liberar os processos para novos forks.
