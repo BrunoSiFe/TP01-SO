@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 
 /* MARK NAME Bruno Ferreira Da Silva */
-/* MARK NAME Nome de Outro Integrante Aqui */
+/* MARK NAME Gabriel de Araújo Marques */
 /* MARK NAME E Etc */
 
 /****************************************************************
@@ -52,26 +52,64 @@ struct pipecmd {
 int fork1(void);  // Fork mas fechar se ocorrer erro.
 struct cmd *parsecmd(char*); // Processar o linha de comando.
 
+void runcmd(struct cmd *cmd);
+
 void execSimpleCommand(char** argv)
 {
-    pid_t pid = fork1(); 
-  
-    if (pid == 0) {
-      if (execvp(argv[0], argv) < 0) {
-          printf("\nNão foi possível executar o comando.");
-      }
-      exit(0);
-    } else {
-      wait(NULL); 
-      return;
+    if (execvp(argv[0], argv) < 0) {
+        printf("\nNão foi possível executar o comando.");
     }
+}
+
+void execRedirectCommand(struct redircmd *rcmd)
+{
+    close(rcmd->fd);
+    if(open(rcmd->file, rcmd->mode) < 0){
+        printf("Não é possível abrir o arquivo\n");
+        return;
+    }
+    
+    runcmd(rcmd->cmd);
+}
+
+void execPipeCommand(struct pipecmd* pcmd) {
+    int p[2];
+
+    if (pipe(p) < 0) {
+        printf("\nErro ao executar pipe");
+        return;
+    }
+
+    pid_t pid;
+
+    pid = fork1();
+    if (pid == 0) {
+        close(STDOUT_FILENO);
+        dup(p[1]);
+        close(p[0]);
+        close(p[1]);
+        runcmd(pcmd->left);
+    }
+
+    pid = fork1();
+    if (pid == 0) {
+        close(STDIN_FILENO);
+        dup(p[0]);
+        close(p[0]);
+        close(p[1]);
+        runcmd(pcmd->right);
+    }
+
+    close(p[0]);
+    close(p[1]);
+    wait(NULL);
+    wait(NULL);
 }
 
 /* Executar comando cmd.  Nunca retorna. */
 void
 runcmd(struct cmd *cmd)
 {
-  int p[2], r;
   struct execcmd *ecmd;
   struct pipecmd *pcmd;
   struct redircmd *rcmd;
@@ -101,9 +139,8 @@ runcmd(struct cmd *cmd)
     /* MARK START task3
      * TAREFA3: Implemente codigo abaixo para executar
      * comando com redirecionamento. */
-    fprintf(stderr, "redir nao implementado\n");
+    execRedirectCommand(rcmd);
     /* MARK END task3 */
-    runcmd(rcmd->cmd);
     break;
 
   case '|':
@@ -111,7 +148,7 @@ runcmd(struct cmd *cmd)
     /* MARK START task4
      * TAREFA4: Implemente codigo abaixo para executar
      * comando com pipes. */
-    fprintf(stderr, "pipe nao implementado\n");
+    execPipeCommand(pcmd);
     /* MARK END task4 */
     break;
   }    
