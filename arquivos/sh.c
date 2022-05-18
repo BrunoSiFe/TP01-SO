@@ -180,11 +180,13 @@ main(void)
      * Insira sua resposta no código e modifique o fprintf abaixo
      * para reportar o erro corretamente. 
      * 
-     * Resposta : O IF avalia se o prosseso foi capaz de encontrar
+     * Resposta : O IF [if(chdir(buf+3) < 0)] avalia se o prosseso foi capaz de encontrar
      * o folder informado como argumento para o comando CD, ele é necessário
      * para tratar caso não seja achado o folder informado, e não terminar a execução
      * do SO, e sim tratar o erro e retorna-lo para o usuário de uma maneira mais 
-     * user friendly.*/
+     * user friendly. O IF [if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' ')] avalia separadamente 
+     * o comando CD pois ele não utiliza o execvp(), e sim o chdir() para procurar e executar o 
+     * comando.*/
     if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
       buf[strlen(buf)-1] = 0;
       if(chdir(buf+3) < 0)
