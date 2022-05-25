@@ -12,6 +12,44 @@
 /* MARK NAME Gabriel de Araújo Marques */
 /* MARK NAME E Etc */
 
+/*****************************************************************
+ * RELATÓRIO
+
+1. Termo de compromisso
+
+Os membros do grupo afirmam que todo o código desenvolvido para este
+trabalho é de autoria própria.  Exceto pelo material listado no item 3
+deste relatório, os membros do grupo afirmam não ter copiado
+material da Internet nem obtiveram código de terceiros.
+
+2. Membros do grupo e alocação de esforço
+
+Preencha as linhas abaixo com o nome e o e-mail dos integrantes do
+grupo.  Substitua XX pela contribuição de cada membro do grupo no
+desenvolvimento do trabalho.
+
+Bruno Ferreira da Silva <brunosife@gmail.com.br> 50%
+Gabriel de Araújo Marques <amarques.gabriel@gmail.com> 50%
+
+3. Referências bibliográficas
+
+https://linux.die.net/man/2/pipe
+https://linux.die.net/man/2/close
+https://linux.die.net/man/2/fork
+https://linux.die.net/man/3/exec
+
+4. Estruturas de dados
+
+Task 1: Deixamos no código um comentário respondendo à questão
+
+Task 2: Para a task 2, ao usarmos o comando execpv para executarmos o comando passado, recebendo os argumentos necessários a ela, quando presentes.
+Caso ocorra uma interrupção durante a execução lançamos uma mensagem de erro para o usuário.
+
+Task 3: Na task 3, fazemos uma chamada do close() para fechar o stdin ou stdout (de acordo com o operador ">" ou "<") e então chamamos o open() para abrir o arquivo selecionado usando o file descriptor anteriormente fechado, redirecionando o conteúdo do arquivo para o stdin ou o conteúdo do stdout para o arquivo.
+
+Task 4: Na task 4, fazemos uma chamada do pipe() para abrir um pipe, retornando um file descriptor para leitura e um para escrita. Então, executamos o comando à esquerda do operador "|", fechando o stdout e mandando a saída do programa para o pipe e depois executamos o programa à direita do operador "|" redirecionando os dados do pipe para o stdin. Então chamamos wait(NULL) para aguardar até os processos filhos terminarem a sua execução
+*******************************************************************/
+
 /****************************************************************
  * Shell xv6 simplificado
  *
